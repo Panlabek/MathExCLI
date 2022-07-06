@@ -53,3 +53,15 @@ def test_update_ex_status_and_df():
     ex.ex_status = status
     ex.date_finished = df
     assert ex_db.fetch_all_exercises()[0] == ex.get_ex_as_tuple()
+def test_marking_status_as_done():
+    ex_db = create_dummy_db()
+    first_ex = 0
+    last_ex = randint(7,100)
+    chapter = randint(0,10)
+    status = "DONE"
+    ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    ex_db.mark_status_as_done_for_all_exercises(chapter)
+    data = ex_db.fetch_all_exercises()
+    for i in data:
+        _,_,e_status,_ = i
+        assert e_status == status
