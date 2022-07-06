@@ -5,12 +5,15 @@ class MathDb():
     def __init__(self, db_name):
         self.conn = sqlite3.connect(f"{db_name}")
         self.c = self.conn.cursor()
-        # self.c.execute("""CREATE TABLE exercises (
-        #             chapter integer,
-        #             ex_number integer,
-        #             ex_status text,
-        #             date_finished text
-        #             )""")
+        try:
+            self.c.execute("""CREATE TABLE exercises (
+                        chapter integer,
+                        ex_number integer,
+                        ex_status text,
+                        date_finished text
+                        )""")
+        except sqlite3.OperationalError:
+            pass
     def insert_exercise(self, exercise):
         self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter AND ex_number = :ex_number", {"chapter": exercise.chapter, "ex_number": exercise.ex_number})
         ex_list = self.c.fetchall()
@@ -29,7 +32,7 @@ class MathDb():
         self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter", {"chapter": chapter})
         return self.c.fetchall()
     def create_dummy_exercises_for_chapter_given_range(self, first_exercise: int, last_exercise: int, chapter: int):
-        self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter AND ex_number = :ex_number", {"chapter": chapter})
+        self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter", {"chapter": chapter})
         list_ex = self.c.fetchall()
         if len(list_ex) == 0:
             with self.conn:
