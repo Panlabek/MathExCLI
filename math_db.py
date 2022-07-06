@@ -38,7 +38,7 @@ class Math_db():
             with self.conn:
                 for i in range(first_exercise, last_exercise+1):
                     dummy_exercise = Exercise(i, chapter, "TODO", None)
-                    self.c.execute("INSERT INTO exercises VALUES (:chapter, :ex_number, :ex_status, :date_finished)", {"chapter": dummy_exercise.chapter, "ex_number": dummy_exercise.ex_number, "ex_status": dummy_exercise.ex_status, "date_finished": dummy_exercise.date_finished})
+                    self.c.execute("INSERT INTO exercises VALUES (:ex_number, :chapter, :ex_status, :date_finished)", {"chapter": dummy_exercise.chapter, "ex_number": dummy_exercise.ex_number, "ex_status": dummy_exercise.ex_status, "date_finished": dummy_exercise.date_finished})
         else:
             pass
     def update_ex_status_and_date_finished(self,new_status: str, new_date, ex_number: int, chapter: int):
