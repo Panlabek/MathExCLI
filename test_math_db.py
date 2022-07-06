@@ -29,4 +29,9 @@ def test_get_exercises_by_num_and_chap():
     ex_db = create_dummy_db()
     ex_db.insert_exercise(ex)
     assert ex_db.get_exercises_by_num_and_chap(ex_number=ex.ex_number, chapter=ex.chapter)[0] == ex.get_ex_as_tuple()
+def test_get_exercises_by_chap():
+    ex = create_rand_exercise()
+    ex_db = create_dummy_db()
+    ex_db.insert_exercise(ex)
+    assert ex_db.get_exercises_by_chap(chapter=ex.chapter)[0] == ex.get_ex_as_tuple()
     assert ex_db.fetch_all_exercises()[0] == ex.get_ex_as_tuple()
