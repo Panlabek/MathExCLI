@@ -19,7 +19,7 @@ class Math_db():
         ex_list = self.c.fetchall()
         if len(ex_list) == 0:
             with self.conn:
-                self.c.execute("INSERT INTO exercises VALUES (:chapter, :ex_number, :ex_status, :date_finished)", {"chapter": exercise.chapter, "ex_number": exercise.ex_number, "ex_status": exercise.ex_status, "date_finished": exercise.date_finished})
+                self.c.execute("INSERT INTO exercises VALUES (:ex_number, :chapter, :ex_status, :date_finished)", {"chapter": exercise.chapter, "ex_number": exercise.ex_number, "ex_status": exercise.ex_status, "date_finished": exercise.date_finished})
         else:
             self.update_ex_status_and_date_finished(new_status=exercise.ex_status, new_date=exercise.date_finished, ex_number=exercise.ex_number, chapter=exercise.chapter)
     def remove_exercise(self,exercise):
