@@ -1,5 +1,7 @@
+import datetime
 from math_db import Math_db
-from testing_helpers import create_dummy_db, create_dummy_exercise, create_rand_exercise, create_exercise_with_input
+from random import randint
+from testing_helpers import create_dummy_db, create_dummy_exercise, create_rand_exercise, create_exercise_with_input, rand_ex_status
 def test_exercise_class_test1():
     ex_number = 2
     ex1 = create_exercise_with_input(ex_number, 0, "")
@@ -34,4 +36,20 @@ def test_get_exercises_by_chap():
     ex_db = create_dummy_db()
     ex_db.insert_exercise(ex)
     assert ex_db.get_exercises_by_chap(chapter=ex.chapter)[0] == ex.get_ex_as_tuple()
+def test_dummy_exercises_creation():
+    first_ex = 0
+    last_ex = randint(7,100)
+    chapter = randint(0,10)
+    ex_db = create_dummy_db()
+    ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    assert len(ex_db.fetch_all_exercises()) == (last_ex+1)
+def test_update_ex_status_and_df():
+    ex_db = create_dummy_db()
+    ex = create_rand_exercise(datetime.datetime.now())
+    df = ex_db.get_todays_date()
+    status = rand_ex_status()
+    ex_db.insert_exercise(ex)
+    ex_db.update_ex_status_and_date_finished(new_status=status, new_date=df, ex_number=ex.ex_number, chapter=ex.chapter)
+    ex.ex_status = status
+    ex.date_finished = df
     assert ex_db.fetch_all_exercises()[0] == ex.get_ex_as_tuple()
