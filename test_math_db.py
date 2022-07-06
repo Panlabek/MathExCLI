@@ -65,3 +65,25 @@ def test_marking_status_as_done():
     for i in data:
         _,_,e_status,_ = i
         assert e_status == status
+def test_fetching_exercises_from_given_range():
+    ex_db = create_dummy_db()
+    first_ex = 0
+    last_ex = randint(7,100)
+    chapter = randint(0,10)
+    ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    data = ex_db.fetch_exercises_from_given_range(first_ex=first_ex, last_ex=last_ex, chapter=chapter)
+    counter = 0
+    for _ in data: counter += 1
+    assert counter == (last_ex+1)
+def test_marking_status_as_done_for_given_range():
+    ex_db = create_dummy_db()
+    first_ex = 0
+    last_ex = randint(7,100)
+    chapter = randint(0,10)
+    status = "DONE"
+    ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    ex_db.mark_status_as_done_for_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    data = ex_db.fetch_exercises_from_given_range(first_ex=first_ex, last_ex=last_ex, chapter=chapter)
+    for i in data:
+        _,_,_e_status,_ = i
+        assert _e_status == status
