@@ -1,7 +1,7 @@
 import sqlite3
 from exercise import Exercise
 import datetime
-class MathDb():
+class Math_db():
     def __init__(self, db_name):
         self.conn = sqlite3.connect(f"{db_name}")
         self.c = self.conn.cursor()
@@ -69,7 +69,9 @@ class MathDb():
         self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter AND ex_status = 'DONE'", {"chapter": chapter})
         ex_list = self.c.fetchall()
         return self.count_exercise_list(ex_list)
-
+    def fetch_all_exercises(self):
+        self.c.execute("SELECT * FROM exercises")
+        return self.c.fetchall()
     def get_todays_date(self):
         return datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d")
 
