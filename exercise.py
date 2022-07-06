@@ -6,3 +6,5 @@ class Exercise():
         self.date_finished = date_finished
     def __str__(self):
         return f"ex_number:{self.ex_number}, chapter:{self.chapter}, ex_status:{self.ex_status}, date_finished:{self.date_finished}"
+    def get_ex_as_tuple(self):
+        return (self.ex_number, self.chapter, self.ex_status, self.date_finished)
