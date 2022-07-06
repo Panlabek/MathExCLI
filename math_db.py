@@ -7,8 +7,8 @@ class Math_db():
         self.c = self.conn.cursor()
         try:
             self.c.execute("""CREATE TABLE exercises (
-                        chapter integer,
                         ex_number integer,
+                        chapter integer,
                         ex_status text,
                         date_finished text
                         )""")
@@ -24,9 +24,9 @@ class Math_db():
             self.update_ex_status_and_date_finished(new_status=exercise.ex_status, new_date=exercise.date_finished, ex_number=exercise.ex_number, chapter=exercise.chapter)
     def remove_exercise(self,exercise):
         with self.conn:
-            self.c.execute("DELETE from exercises WHERE chapter = :chapter AND ex_number = :ex_number", {"chapter":exercise.chapter, "ex_number": exercise.ex_number})
+            self.c.execute("DELETE from exercises WHERE ex_number = :ex_number AND chapter = :chapter", {"ex_number": exercise.ex_number, "chapter": exercise.chapter})
     def get_exercises_by_num_and_chap(self, ex_number: int, chapter: int):
-        self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter AND ex_number = :ex_number", {"chapter": chapter, "ex_number": ex_number})
+        self.c.execute("SELECT * FROM exercises WHERE ex_number = :ex_number AND chapter = :chapter", {"ex_number": ex_number, "chapter": chapter})
         return self.c.fetchall()
     def get_exercises_by_chap(self,chapter: int):
         self.c.execute("SELECT * FROM exercises WHERE chapter = :chapter", {"chapter": chapter})
