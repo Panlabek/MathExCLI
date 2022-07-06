@@ -53,8 +53,13 @@ class Math_db():
             self.c.execute("""UPDATE exercises SET ex_status = :ex_status WHERE chapter = :chapter""", {"ex_status": "DONE", "chapter": chapter})
             self.c.execute("""UPDATE exercises SET date_finished = :date_finished WHERE chapter = :chapter""",
                         {"date_finished": self.get_todays_date(), "chapter": chapter})
-
-    def mark_status_as_done_for_given_range(self,first_exercise: int, last_exercise, chapter):
+    def fetch_exercises_from_given_range(self, first_ex: int, last_ex: int, chapter:int):
+        all_exercises = list()
+        for i in range(first_ex, last_ex+1):
+            data = self.get_exercises_by_num_and_chap(i, chapter)
+            all_exercises.append(data[0])
+        return all_exercises
+    def mark_status_as_done_for_given_range(self,first_exercise: int, last_exercise:int, chapter):
         with self.conn:
             for i in range(first_exercise, last_exercise+1):
                 self.c.execute("""UPDATE exercises SET ex_status = :ex_status WHERE ex_number = :ex_number AND chapter = :chapter""",
@@ -74,13 +79,11 @@ class Math_db():
         return self.c.fetchall()
     def get_todays_date(self):
         return datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d")
-
     def count_exercise_list(self,c: list):
         count = 0
         for _ in c:
             count +=1
         return count
-
     def fetch_finished_ex_from_given_date(self,date):
         self.c.execute("""SELECT * FROM exercises WHERE date_finished = :date""",
                 {"date": date})
