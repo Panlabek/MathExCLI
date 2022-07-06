@@ -103,3 +103,20 @@ def test_count_finished_ex_from_given_chapter():
     ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
     ex_db.mark_status_as_done_for_all_exercises(chapter)
     assert ex_db.count_finished_ex_from_given_chapter(chapter=chapter) == (last_ex+1)
+def test_fetch_finished_ex_from_given_data():
+    ex_db = create_dummy_db()
+    ex_num = 12
+    ex_chap = 32
+    ex_status = "DONE"
+    ex_df = ex_db.get_todays_date()
+    ex = create_exercise_with_input(ex_number=ex_num,chapter=ex_chap, ex_status=ex_status, date_finished=ex_df)
+    ex_db.insert_exercise(ex)
+    assert len(ex_db.fetch_finished_ex_from_given_date(date=ex_db.get_todays_date())) == 1
+    assert ex_db.fetch_finished_ex_from_given_date(date=ex_db.get_todays_date())[0] == ex.get_ex_as_tuple()
+def test_fetch_all_exercises():
+    ex_db = create_dummy_db()
+    first_ex = 0
+    last_ex = randint(7,100)
+    chapter = randint(0,10)
+    ex_db.create_dummy_exercises_for_chapter_given_range(first_exercise=first_ex, last_exercise=last_ex, chapter=chapter)
+    assert len(ex_db.fetch_all_exercises()) == (last_ex+1)
