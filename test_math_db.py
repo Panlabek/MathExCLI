@@ -23,4 +23,10 @@ def test_remove_exercise():
     ex_db.insert_exercise(ex)
     assert ex_db.fetch_all_exercises()[0] == ex.get_ex_as_tuple()
     ex_db.remove_exercise(ex)
+    assert len(ex_db.fetch_all_exercises()) == 0
+def test_get_exercises_by_num_and_chap():
+    ex = create_rand_exercise()
+    ex_db = create_dummy_db()
+    ex_db.insert_exercise(ex)
+    assert ex_db.get_exercises_by_num_and_chap(ex_number=ex.ex_number, chapter=ex.chapter)[0] == ex.get_ex_as_tuple()
     assert ex_db.fetch_all_exercises()[0] == ex.get_ex_as_tuple()
